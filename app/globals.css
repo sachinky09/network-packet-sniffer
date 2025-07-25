@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: "JetBrains Mono", monospace, sans-serif;
+  background-color: #0e0e10;
+  color: #ffffff;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #14ffec;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00ff41;
+}
+
+.cyber-border {
+  border: 1px solid #14ffec;
+  box-shadow: 0 0 10px rgba(20, 255, 236, 0.3);
+}
+
+.cyber-glow {
+  box-shadow: 0 0 20px rgba(20, 255, 236, 0.5);
+}
+
+.packet-row:hover {
+  background-color: rgba(20, 255, 236, 0.1);
+  border-left: 3px solid #14ffec;
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.status-connected {
+  background-color: #00ff41;
+  box-shadow: 0 0 10px #00ff41;
+}
+
+.status-disconnected {
+  background-color: #ff4444;
+  box-shadow: 0 0 10px #ff4444;
+}
+
+.status-paused {
+  background-color: #ffaa00;
+  box-shadow: 0 0 10px #ffaa00;
+}
