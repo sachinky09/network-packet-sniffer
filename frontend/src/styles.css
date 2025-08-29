@@ -1,0 +1,47 @@
+/* frontend/src/styles.css */
+
+:root{
+  --bg: #0e1116;
+  --panel: #151823;
+  --muted: #98a0aa;
+  --text: #e6eef6;
+  --accent: #3b82f6;
+  --row-me: #173b23;   /* greenish for "to me" */
+  --row-not: #3a3218;  /* yellowish for others */
+  --border: #232831;
+}
+
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text);}
+
+/* Header */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--panel);border-bottom:1px solid var(--border);
+}
+.title{font-weight:600;font-size:16px}
+.controls{display:flex;align-items:center;gap:8px}
+.controls select{padding:6px 8px;border-radius:6px;background:#0b0d11;color:var(--text);border:1px solid var(--border)}
+.controls button{padding:6px 10px;border-radius:6px;border:1px solid var(--border);background:#0b0d11;color:var(--text);cursor:pointer}
+.controls button:disabled{opacity:0.5;cursor:not-allowed}
+.follow{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px}
+
+/* Table container */
+.table-wrap{padding:12px;height:calc(100vh - 64px);overflow:auto}
+.pkt-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.pkt-table thead th{position:sticky;top:0;background:#0f1318;padding:10px 12px;text-align:left;font-size:13px;color:var(--muted);border-bottom:1px solid var(--border)}
+.pkt-table tbody td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.02);font-size:13px;color:var(--text)}
+.pkt-table tbody tr:hover td{background:#101419}
+
+/* row styles */
+.to-me td{background:var(--row-me);border-bottom:1px solid #1f6f3b}
+.not-me td{background:var(--row-not);border-bottom:1px solid #6f5e1f}
+
+/* summary column: ellipsis */
+.summary{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:420px}
+
+/* responsive tweaks */
+@media (max-width:900px){
+  .summary{max-width:120px}
+  .pkt-table thead th:nth-child(3),.pkt-table thead th:nth-child(5){display:none}
+  .pkt-table td:nth-child(3),.pkt-table td:nth-child(5){display:none}
+}

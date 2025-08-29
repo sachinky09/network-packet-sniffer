@@ -1,6 +1,0 @@
-Flask==2.3.3
-Flask-SocketIO==5.3.6
-Flask-CORS==4.0.0
-scapy==2.5.0
-python-socketio==5.9.0
-eventlet==0.33.3
