@@ -123,14 +123,3 @@ pip install -r backend/requirements.txt
 
 ---
 
-## License
-
-MIT License — feel free to use and adapt.
-
----
-
-If you want, I can now:
-- Generate a `README.md` including screenshots (if you provide them), or
-- Produce a cleaned `.gitignore` suitable for this project, or
-- Give a short walkthrough of the three primary files (`backend/app.py`, `frontend/src/PacketList.jsx`, `frontend/src/styles.css`) line-by-line.
-
