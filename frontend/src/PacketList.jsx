@@ -1,8 +1,11 @@
 // frontend/src/PacketList.jsx
 import React, { useEffect, useRef, useState } from "react";
 import "./styles.css";
+import dotenv from "dotenv";
+dotenv.config();
 
-const API = "http://127.0.0.1:5000";
+
+const API = process.env.API;
 
 function timeFromIso(iso) {
   try { return new Date(iso).toLocaleTimeString(); }
