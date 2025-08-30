@@ -1,4 +1,4 @@
-# backend/app.py
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from scapy.all import (
@@ -12,16 +12,15 @@ from threading import Lock
 app = Flask(__name__)
 CORS(app)
 
-# --- global state ---
+
 sniffer = None
 sniffer_iface = None
 sniff_lock = Lock()
-captured = []           # list of packet dicts (newest appended to end)
-MAX_STORE = 2000        # keep last N packets
+captured = []          
+MAX_STORE = 2000        
 vendor_cache = {}
-mac_lookup = MacLookup()  # may download DB on first use
+mac_lookup = MacLookup()  
 
-# --- small helpers ---
 PROTO_MAP = {1: "ICMP", 6: "TCP", 17: "UDP"}
 
 def now_iso():
@@ -38,7 +37,7 @@ def protocol_name(pkt):
     return "OTHER"
 
 def safe_lookup_vendor(mac, ip_hint=None):
-    # show "Localhost" for loopback IPs
+   
     if ip_hint and (ip_hint == "127.0.0.1" or ip_hint.startswith("127.")):
         return "Localhost"
     if not mac:
@@ -76,7 +75,7 @@ def extract_packet(pkt, iface_my_ip=None, iface_my_mac=None):
             info["src_mac"] = pkt[Ether].src
             info["dst_mac"] = pkt[Ether].dst
 
-        # IP / IPv6
+       
         if IP in pkt:
             info["src_ip"] = pkt[IP].src
             info["dst_ip"] = pkt[IP].dst
@@ -84,7 +83,7 @@ def extract_packet(pkt, iface_my_ip=None, iface_my_mac=None):
             info["src_ip"] = pkt[IPv6].src
             info["dst_ip"] = pkt[IPv6].dst
 
-        # Ports for TCP/UDP
+        
         if TCP in pkt:
             info["src_port"] = pkt[TCP].sport
             info["dst_port"] = pkt[TCP].dport
@@ -92,32 +91,32 @@ def extract_packet(pkt, iface_my_ip=None, iface_my_mac=None):
             info["src_port"] = pkt[UDP].sport
             info["dst_port"] = pkt[UDP].dport
 
-        # Vendor lookup (avoid meaningless lookups for loopback)
+        
         info["src_vendor"] = safe_lookup_vendor(info["src_mac"], info["src_ip"])
         info["dst_vendor"] = safe_lookup_vendor(info["dst_mac"], info["dst_ip"])
 
-        # meant_for_me logic: prefer L2 (MAC) when available, else L3 (IP)
+       
         if iface_my_mac and info["dst_mac"] and info["dst_mac"].lower() == iface_my_mac.lower():
             info["meant_for_me"] = True
         elif iface_my_ip and info["dst_ip"] and info["dst_ip"] == iface_my_ip:
             info["meant_for_me"] = True
         elif iface_my_ip and info["dst_ip"] and info["dst_ip"].startswith("127.") and iface_my_ip.startswith("127."):
-            # loopback on both sides
+           
             info["meant_for_me"] = True
 
     except Exception as e:
-        # keep packet but mark parse error inside summary
+        
         info["summary"] += f" [parse_err:{e}]"
 
     return info
 
-# --- sniffer control ---
+
 def start_sniff(interface):
     global sniffer, sniffer_iface
     with sniff_lock:
         if sniffer and sniffer.running:
             return False, "already running"
-        # determine my iface ip/mac for classification
+        
         try:
             my_ip = get_if_addr(interface)
         except Exception:
@@ -127,7 +126,7 @@ def start_sniff(interface):
         except Exception:
             my_mac = None
 
-        # callback binds current iface ip/mac via closure
+        
         def on_packet(pkt):
             info = extract_packet(pkt, iface_my_ip=my_ip, iface_my_mac=my_mac)
             with sniff_lock:
@@ -187,11 +186,11 @@ def route_clear():
 
 @app.route("/packets", methods=["GET"])
 def route_packets():
-    # return last N packets (client will poll)
+    
     with sniff_lock:
         return jsonify(captured)
 
-# --- main ---
+
 if __name__ == "__main__":
     # run as root: sudo python3 app.py
     app.run(host="0.0.0.0", port=5000, debug=False)
